@@ -1,1 +1,1 @@
-require 'lib/test_data_generator.rb'
+require 'test_data_generator'

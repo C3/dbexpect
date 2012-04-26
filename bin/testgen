@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'lib/testgen'
+require 'testgen'
 
 tg = TestDataGenerator.new
 tg.eval_script(ARGF.read)

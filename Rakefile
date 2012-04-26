@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/bfabry/testgen"
   gem.license = "PRIVATE"
   gem.summary = %Q{Generates inserts for test data from DSL}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{As above}
   gem.email = "beau.fabry@c3businesssolutions.com"
   gem.authors = ["Beau Fabry"]
   # dependencies defined in Gemfile

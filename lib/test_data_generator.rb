@@ -1,7 +1,7 @@
-require 'lib/db_sequence'
-require 'lib/db_null'
-require 'lib/db_string'
-require 'lib/table'
+require 'db_sequence'
+require 'db_null'
+require 'db_string'
+require 'table'
 class TestDataGenerator
   def initialize
     @tables = {}
