@@ -16,8 +16,8 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "testgen"
   gem.homepage = "http://github.com/bfabry/testgen"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
+  gem.license = "PRIVATE"
+  gem.summary = %Q{Generates inserts for test data from DSL}
   gem.description = %Q{TODO: longer description of your gem}
   gem.email = "beau.fabry@c3businesssolutions.com"
   gem.authors = ["Beau Fabry"]

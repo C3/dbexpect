@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'lib/testgen'
+
+tg = TestDataGenerator.new
+tg.eval_script(ARGF.read)
+tg.print_inserts
