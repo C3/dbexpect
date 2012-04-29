@@ -13,7 +13,7 @@ describe "TestGen" do
 
       output = StringIO.new
       @it.print_inserts(output)
-      output.length.should == 79912
+      output.length.should == 81721
     end
   end
 end

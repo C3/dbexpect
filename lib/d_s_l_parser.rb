@@ -1,6 +1,7 @@
 class DSLParser
   def initialize
     @tables = {}
+    @description_stack = []
   end
 
   def parse(script)
@@ -16,11 +17,18 @@ protected
     instance_eval(File.read(file))
   end
 
+  def describe(description,&block)
+    @description_stack << description
+    instance_eval(&block)
+    @description_stack.pop
+  end
+
   def defaults_for(table, columns)
     columns.each do |col, value|
       table.set_default(col,wrap(value))
     end
   end
+  alias_method :expected_defaults, :defaults_for
 
   def insert_into(table,row_columns,rows)
     rows.each do |row_values|
@@ -28,6 +36,7 @@ protected
       table.add_row(Hash[ row_columns.zip(wrapped)])
     end
   end
+  alias_method :expect_rows, :insert_into
 
   def all_tables(col_values)
     col_values.each do |col,value|
