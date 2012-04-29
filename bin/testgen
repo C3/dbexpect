@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 
-require 'testgen'
+begin
+  require 'testgen'
+rescue LoadError
+  $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+  require 'testgen'
+end
 
 tg = TestDataGenerator.new
 tg.eval_script(ARGF.read)
