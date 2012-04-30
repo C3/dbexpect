@@ -12,7 +12,7 @@ class Table
 
   def add_row(column_values)
     create_missing_defaults(column_values.keys)
-    @rows << @defaults.merge(column_values)
+    @rows << set_defaults_at_time_of_addition(column_values)
   end
 
   def insert_stmt
@@ -25,6 +25,10 @@ SQL
   end
 
 protected
+  def set_defaults_at_time_of_addition(row)
+    @defaults.merge(row)
+  end
+
   def row_values(row)
     values = @defaults.merge(row)
     '(' + @defaults.keys.map {|col| values[col].db_str }.join(',') + ')'
