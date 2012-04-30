@@ -25,8 +25,17 @@ describe "TestGen" do
 
       @db.exec(output.read)
 
-      puts @db.select_all('select * from source.src_table').inspect
-      puts @db.select_all('select * from target.tgt_table').inspect
+      @db.exec('select * from source.src_table').values.should ==
+        [
+          ["default string", "7", nil],
+          ["overridden string", "1", "not null"] ]
+
+      @db.exec('select * from target.tgt_table').values.should ==
+        [
+         ["defaulted in script", "5", nil],
+         ["defaulted in script", "5", nil],
+         ["defaulted in script", "5", nil],
+         ["defaulted in script", "5", "4"] ]
     end
   end
 end

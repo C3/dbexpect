@@ -19,15 +19,13 @@ describe "our basic test definition test" do
       [NULL],
       [nil],
       [null],
-      [4]
-    ]
+      [4] ]
 
   describe "nested definition" do
     insert_into @src,
       [:str_column,:int_column,:nullable_col],
       [
-        ['overridden string',1,'not null']
-      ]
+        ['overridden string',1,'not null'] ]
   end
 
 end
