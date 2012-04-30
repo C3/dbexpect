@@ -12,7 +12,7 @@ class Table
 
   def add_row(column_values)
     create_missing_defaults(column_values.keys)
-    @rows << column_values
+    @rows << @defaults.merge(column_values)
   end
 
   def insert_stmt
