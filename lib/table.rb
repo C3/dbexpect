@@ -1,41 +1,38 @@
+require 'defaulting_row_set'
 class Table
   def initialize(schema,name)
     @schema = schema
     @name = name
-    @defaults = Hash.new
-    @rows = []
+
+    @tdr_rows = DefaultingRowSet.new
+    @expectations = DefaultingRowSet.new
   end
 
   def set_default(column,value)
-    @defaults[column] = value
+    @tdr_rows.set_default(column, value)
+  end
+
+  def set_expected_default(column,value)
+    @expectations.set_default(column,value)
+    @tdr_rows.set_default(column,value)
   end
 
   def add_row(column_values)
-    create_missing_defaults(column_values.keys)
-    @rows << set_defaults_at_time_of_addition(column_values)
+    @tdr_rows.add_row(column_values)
+  end
+
+  def add_expected_row(column_values)
+    @expectations.add_row(column_values)
+    @tdr_rows.add_row(column_values)
   end
 
   def insert_stmt
-    return '' if @rows.empty?
+    return '' if @tdr_rows.empty?
 
     stmt = <<SQL
-INSERT INTO #{@schema}.#{@name} (#{@defaults.keys.join(',')})
-VALUES #{@rows.map {|r| row_values(r) }.join(",\n") };
+INSERT INTO #{@schema}.#{@name} (#{@tdr_rows.columns})
+VALUES #{@tdr_rows.values};
 SQL
-  end
-
-protected
-  def set_defaults_at_time_of_addition(row)
-    @defaults.merge(row)
-  end
-
-  def row_values(row)
-    values = @defaults.merge(row)
-    '(' + @defaults.keys.map {|col| values[col].db_str }.join(',') + ')'
-  end
-
-  def create_missing_defaults(columns)
-    columns.each {|c| @defaults[c] ||= DbNull.new }
   end
 
 end

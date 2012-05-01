@@ -24,19 +24,33 @@ protected
   end
 
   def defaults_for(table, columns)
+    __set_defaults(table,:set_default,columns)
+  end
+
+  def expected_defaults(table, columns)
+    __set_defaults(table,:set_expected_default,columns)
+  end
+
+  def __set_defaults(table, method, columns)
     columns.each do |col, value|
-      table.set_default(col,wrap(value))
+      table.send(method, col, wrap(value))
     end
   end
-  alias_method :expected_defaults, :defaults_for
 
   def insert_into(table,row_columns,rows)
+    __add_rows(table, :add_row, row_columns, rows)
+  end
+
+  def expect_rows(table, row_columns, rows)
+    __add_rows(table, :add_expected_row, row_columns, rows)
+  end
+
+  def __add_rows(table, row_method, row_columns, rows)
     rows.each do |row_values|
       wrapped = row_values.map {|v| wrap(v) }
-      table.add_row(Hash[ row_columns.zip(wrapped)])
+      table.send(row_method,Hash[ row_columns.zip(wrapped)])
     end
   end
-  alias_method :expect_rows, :insert_into
 
   def all_tables(col_values)
     col_values.each do |col,value|
