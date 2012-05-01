@@ -9,4 +9,4 @@ end
 
 tg = TestDataGenerator.new
 tg.eval_script(ARGF.read)
-tg.print_inserts
+tg.print_tdr_inserts

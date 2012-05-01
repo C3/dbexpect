@@ -6,10 +6,12 @@ class Table
 
     @tdr_rows = DefaultingRowSet.new
     @expectations = DefaultingRowSet.new
+    @fixture_rows = DefaultingRowSet.new
   end
 
   def set_default(column,value)
     @tdr_rows.set_default(column, value)
+    @fixture_rows.set_default(column, value)
   end
 
   def set_expected_default(column,value)
@@ -19,6 +21,7 @@ class Table
 
   def add_row(column_values)
     @tdr_rows.add_row(column_values)
+    @fixture_rows.add_row(column_values)
   end
 
   def add_expected_row(column_values)
@@ -26,7 +29,7 @@ class Table
     @tdr_rows.add_row(column_values)
   end
 
-  def insert_stmt
+  def tdr_insert_stmt
     return '' if @tdr_rows.empty?
 
     stmt = <<SQL

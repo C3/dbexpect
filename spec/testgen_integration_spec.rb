@@ -13,14 +13,14 @@ describe "TestGen" do
     @db.close
   end
 
-  describe "generating test data from scripts" do
+  describe "generating inserts for a TDR from scripts" do
     it "should output what we expect" do
       @it.eval_script(
         File.read('spec/fixtures/basic_test_defn.rb')
       )
 
       output = StringIO.new
-      @it.print_inserts(output)
+      @it.print_tdr_inserts(output)
       output.rewind
 
       @db.exec(output.read)

@@ -12,9 +12,9 @@ class TestDataGenerator
     @tables = parser.tables
   end
 
-  def print_inserts(printer = STDOUT)
+  def print_tdr_inserts(printer = STDOUT)
     @tables.each do |table|
-      printer.puts table.insert_stmt
+      printer.puts table.tdr_insert_stmt
     end
   end
 
