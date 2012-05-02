@@ -38,4 +38,15 @@ VALUES #{@tdr_rows.values};
 SQL
   end
 
+  def validates_expectations?(database)
+    return true if @expectations.empty?
+
+    stmt = <<SQL
+select * from #{@schema}.#{@name}
+where (#{@expectations.columns}) in (#{@expectations.values})
+SQL
+
+    database.exec(stmt).count == 1
+  end
+
 end

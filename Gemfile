@@ -12,4 +12,5 @@ group :development do
   gem "rcov", ">= 0"
   gem "rspec", "~> 2.8.0"
   gem 'pg'
+  gem 'pry'
 end

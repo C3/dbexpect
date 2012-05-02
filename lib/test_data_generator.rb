@@ -18,5 +18,9 @@ class TestDataGenerator
     end
   end
 
+  def validates_expectations?(database)
+    @tables.all? {|t| t.validates_expectations?(database) }
+  end
+
 end
 
