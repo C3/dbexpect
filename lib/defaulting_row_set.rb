@@ -4,13 +4,18 @@ class DefaultingRowSet
   def initialize
     @defaults = Hash.new
     @rows = []
+
+    @columns_in_order = []
   end
 
   def set_default(column,value)
+    add_column(column)
     @defaults[column] = value
   end
 
   def add_row(column_values)
+    column_values.keys.map {|col| add_column(col) }
+
     create_missing_defaults(column_values.keys)
     @rows << set_defaults_at_time_of_addition(column_values)
   end
@@ -35,6 +40,11 @@ class DefaultingRowSet
   end
 
 protected
+  def add_column(column)
+    @columns_in_order << column
+    @columns_in_order.uniq!
+  end
+
   def set_defaults_at_time_of_addition(row)
     @defaults.merge(row)
   end
