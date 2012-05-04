@@ -38,12 +38,20 @@ VALUES #{@tdr_rows.values};
 SQL
   end
 
-  def validates_expectations?(database)
-    @expectations.where_clauses.all? do |expectation|
-      database.returns_one_row?(
-        "select * from #{@schema}.#{@name} where (#{expectation})"
-      )
+  def check_expectations(database)
+    @failed_expectations = []
+    @expectations.where_clauses.map do |expectation|
+      num = database.num_rows_match?(
+        "select * from #{@schema}.#{@name} where (#{expectation})")
+
+      if num != 1
+        @failed_expectations << "Expected one row to match #{expectation}, got #{num}"
+      end
     end
+  end
+
+  def validates_expectations?
+    @failed_expectations.empty?
   end
 
 end

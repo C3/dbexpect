@@ -20,7 +20,9 @@ class TestDataGenerator
   def great_expectations(script, target_db = TargetDatabase.from_dsn(@target_dsn))
     eval_script(script)
 
-    if validates_expectations?(target_db)
+    check_table_expectations(target_db)
+
+    if validates_expectations?
       @output.puts "Passed all expectations\n"
       return 0
     else
@@ -43,8 +45,12 @@ protected
     end
   end
 
-  def validates_expectations?(database)
-    @tables.all? {|t| t.validates_expectations?(database) }
+  def check_table_expectations(database)
+    @tables.map {|t| t.check_expectations(database) }
+  end
+
+  def validates_expectations?
+    @tables.all? {|t| t.validates_expectations? }
   end
 
 end

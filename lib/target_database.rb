@@ -11,7 +11,7 @@ class TargetDatabase
     @connection = con
   end
 
-  def returns_one_row?(query)
-    @connection.exec(query).count == 1
+  def num_rows_match?(query)
+    @connection.exec(query).count
   end
 end

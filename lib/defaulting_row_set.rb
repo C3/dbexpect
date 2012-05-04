@@ -21,7 +21,7 @@ class DefaultingRowSet
   end
 
   def columns
-    @defaults.keys.join(',')
+    @columns_in_order.join(',')
   end
 
   def values
@@ -51,7 +51,7 @@ protected
 
   def row_values(row)
     values = @defaults.merge(row)
-    '(' + @defaults.keys.map {|col| values[col].db_str }.join(',') + ')'
+    '(' + @columns_in_order.map {|col| values[col].db_str }.join(',') + ')'
   end
 
   def create_missing_defaults(columns)
