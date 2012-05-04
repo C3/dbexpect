@@ -6,4 +6,8 @@ class DbString
   def db_str
     "'#{@string}'"
   end
+
+  def equality_test
+    " = '#{@string}'"
+  end
 end

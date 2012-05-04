@@ -1,5 +1,5 @@
 require 'test_data_generator'
-require 'odbc'
+require 'target_database'
 
 class TestGen
   def generate_data(script)
@@ -11,6 +11,12 @@ class TestGen
   def great_expectations(dsn,script)
     tg = TestDataGenerator.new
     tg.eval_script(script)
-    tg.validate_epectations?(ODBC.connect(dsn))
+
+    if tg.validate_epectations?(TargetDatabse.from_dsn(dsn))
+      puts "Failed to meet expectations\n"
+    else
+      puts "Passed all expectations\n"
+    end
+
   end
 end

@@ -23,6 +23,13 @@ class DefaultingRowSet
     @rows.map {|r| row_values(r) }.join(",\n") 
   end
 
+  def where_clauses
+    @rows.map do |r|
+      values = @defaults.merge(r)
+      values.map {|col,value| "#{col} #{value.equality_test}" }.join(' AND ')
+    end
+  end
+
   def empty?
     @rows.empty?
   end

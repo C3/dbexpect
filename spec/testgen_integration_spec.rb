@@ -33,28 +33,34 @@ describe "TestGen" do
 
       @db.exec('select * from target.tgt_table').values.should ==
         [
-         ["defaulted in script", "5", nil],
-         ["defaulted in script", "5", nil],
-         ["defaulted in script", "5", nil],
-         ["defaulted in script", "5", "4"] ]
+         ["defaulted in script", "1", nil],
+         ["defaulted in script", "2", nil],
+         ["defaulted in script", "3", nil],
+         ["defaulted in script", "4", "4"],
+         ["special row", "5", "6"]]
     end
   end
 
   describe "validating expectations" do
+    before :each do
+      @target_db = TargetDatabase.from_connection(@db)
+    end
+
     it "should fail if zero expected rows exist" do
-      @it.validates_expectations?(@db).should == false
+      @it.validates_expectations?(@target_db).should == false
     end
 
     it "should pass if exactly correct" do
       @db.exec(@output.read)
-      @it.validates_expectations?(@db).should == true
+      @it.validates_expectations?(@target_db).should == true
     end
 
     it "should whine if more rows than we want" do
       @db.exec(@output.read)
       @output.rewind
       @db.exec(@output.read)
-      @it.validates_expectations?(@db).should == false
+      @it.validates_expectations?(@target_db).should == false
     end
+
   end
 end

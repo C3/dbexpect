@@ -1,3 +1,4 @@
+require 'pry'
 require 'defaulting_row_set'
 class Table
   def initialize(schema,name)
@@ -39,14 +40,11 @@ SQL
   end
 
   def validates_expectations?(database)
-    return true if @expectations.empty?
-
-    stmt = <<SQL
-select * from #{@schema}.#{@name}
-where (#{@expectations.columns}) in (#{@expectations.values})
-SQL
-
-    database.exec(stmt).count == 1
+    @expectations.where_clauses.all? do |expectation|
+      database.returns_one_row?(
+        "select * from #{@schema}.#{@name} where (#{expectation})"
+      )
+    end
   end
 
 end

@@ -9,23 +9,30 @@ describe "our basic test definition test" do
     :int_column => 5
 
 
-  insert_into @src,
-    [:int_column],
-    [[7]]
+  describe "test case 1" do
+    insert_into @src,
+      [:int_column],
+      [[7]]
 
-  expect_rows @tgt,
-    [:nullable_col],
-    [
-      [NULL],
-      [nil],
-      [null],
-      [4] ]
+    expect_rows @tgt,
+      [:int_column,:nullable_col],
+      [
+        [1,NULL],
+        [2,nil],
+        [3,null],
+        [4,4] ]
+  end
 
   describe "nested definition" do
     insert_into @src,
       [:str_column,:int_column,:nullable_col],
       [
         ['overridden string',1,'not null'] ]
+
+    expect_rows @tgt,
+      [:str_column,:nullable_col],
+      [
+        ['special row',6]]
   end
 
 end
