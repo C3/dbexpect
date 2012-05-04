@@ -3,17 +3,14 @@ require 'pg'
 
 describe "TestGen" do
   before :each do
-    @it = TestDataGenerator.new
     @db = PG.connect(:dbname => 'testgen', :port => 5433)
     @db.exec(File.read('spec/fixtures/sample_db.sql'))
 
-    @it.eval_script(
-      File.read('spec/fixtures/basic_test_defn.rb')
-    )
-
     @output = StringIO.new
-    @it.print_tdr_inserts(@output)
-    @output.rewind
+
+    @test_script = File.read('spec/fixtures/basic_test_defn.rb')
+
+    @it = TestDataGenerator.new("dsn",@output)
 
   end
 
@@ -23,6 +20,11 @@ describe "TestGen" do
   end
 
   describe "generating inserts for a TDR from scripts" do
+    before :each do
+      @it.generate_data(@test_script)
+      @output.rewind
+    end
+
     it "should output what we expect" do
       @db.exec(@output.read)
 
@@ -44,22 +46,25 @@ describe "TestGen" do
   describe "validating expectations" do
     before :each do
       @target_db = TargetDatabase.from_connection(@db)
+
+      @it.generate_data(@test_script)
+      @output.rewind
+      @some_inserts = @output.read
     end
 
     it "should fail if zero expected rows exist" do
-      @it.validates_expectations?(@target_db).should == false
+      @it.great_expectations(@test_script,@target_db).should == 1
     end
 
     it "should pass if exactly correct" do
-      @db.exec(@output.read)
-      @it.validates_expectations?(@target_db).should == true
+      @db.exec(@some_inserts)
+      @it.great_expectations(@test_script,@target_db).should == 0
     end
 
     it "should whine if more rows than we want" do
-      @db.exec(@output.read)
-      @output.rewind
-      @db.exec(@output.read)
-      @it.validates_expectations?(@target_db).should == false
+      @db.exec(@some_inserts)
+      @db.exec(@some_inserts)
+      @it.great_expectations(@test_script,@target_db).should == 1
     end
 
   end

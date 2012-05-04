@@ -1,4 +1,3 @@
-require 'pry'
 require 'defaulting_row_set'
 class Table
   def initialize(schema,name)
