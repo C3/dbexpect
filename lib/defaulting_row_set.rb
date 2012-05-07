@@ -1,6 +1,6 @@
 require 'row'
 class DefaultingRowSet
-  attr_accessor :rows
+  attr_accessor :defaults
 
   def initialize
     @defaults = Hash.new
@@ -18,7 +18,7 @@ class DefaultingRowSet
     column_values.keys.map {|col| add_column(col) }
 
     create_missing_defaults(column_values.keys)
-    @rows << Row.new(node,set_defaults_at_time_of_addition(column_values))
+    @rows << Row.new(node,set_defaults_at_time_of_addition(column_values),self)
   end
 
   def columns
@@ -30,10 +30,7 @@ class DefaultingRowSet
   end
 
   def where_clauses
-    @rows.map do |r|
-      values = @defaults.merge(r.row)
-      values.map {|col,value| "#{col} #{value.equality_test}" }.join(' AND ')
-    end
+    @rows.map(&:where_clause)
   end
 
   def empty?
