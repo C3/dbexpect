@@ -1,8 +1,8 @@
-require 'tree_node'
+require 'row_tree_node'
 class DSLParser
   def initialize
     @tables = {}
-    @description_tree = TreeNode.new('->')
+    @description_tree = RowTreeNode.new('->')
   end
 
   def parse(script)

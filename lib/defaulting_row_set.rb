@@ -26,7 +26,7 @@ class DefaultingRowSet
   end
 
   def values
-    @rows.map {|r| row_values(r) }.join(",\n") 
+    @rows.map {|r| r.row_values(@columns_in_order) }.join(",\n") 
   end
 
   def where_clauses
@@ -45,11 +45,6 @@ protected
 
   def set_defaults_at_time_of_addition(row)
     @defaults.merge(row)
-  end
-
-  def row_values(row)
-    values = @defaults.merge(row.row)
-    '(' + @columns_in_order.map {|col| values[col].db_str }.join(',') + ')'
   end
 
   def create_missing_defaults(columns)

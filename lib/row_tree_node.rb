@@ -1,4 +1,4 @@
-class TreeNode
+class RowTreeNode
 
   def initialize(desc, parent = nil)
     @description = desc
@@ -12,7 +12,7 @@ class TreeNode
   end
 
   def create_child(desc)
-    @children << TreeNode.new(desc,self)
+    @children << RowTreeNode.new(desc,self)
     @children.last
   end
 
