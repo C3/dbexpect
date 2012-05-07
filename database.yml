@@ -1,0 +1,4 @@
+testgen:
+  database: testgen
+  username: testgen
+  password: testgen

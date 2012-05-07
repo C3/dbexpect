@@ -1,9 +1,8 @@
-require 'rubygems'
-require 'odbc'
+require 'odbc_connection'
 
 class TargetDatabase
   def self.from_dsn(dsn)
-    new(ODBC.connect(dsn))
+    new(OdbcConnection.new(dsn))
   end
 
   def self.from_connection(con)
@@ -15,11 +14,11 @@ class TargetDatabase
   end
 
   def num_rows_match(query)
-    @connection.exec(query).count
+    @connection.run(query).count
   end
 
   def close
-    @connection.close
+    #@connection.close
   end
 
 end
