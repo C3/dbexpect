@@ -25,6 +25,7 @@ class TestDataGenerator
       @output.puts "Passed all expectations\n"
       return 0
     else
+      @output.puts failed_expectations.join("\n")
       @output.puts "Failed to meet expectations\n"
       return 1
     end
@@ -46,6 +47,10 @@ protected
 
   def check_table_expectations(database)
     @tables.map {|t| t.check_expectations(database) }
+  end
+
+  def failed_expectations
+    @tables.collect(&:failed_expectations).flatten
   end
 
   def validates_expectations?
