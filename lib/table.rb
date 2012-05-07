@@ -1,6 +1,6 @@
 require 'defaulting_row_set'
+require 'expectation_checker'
 class Table
-  attr_accessor :failed_expectations
 
   def initialize(schema,name, expectations = DefaultingRowSet.new)
     @schema = schema
@@ -9,6 +9,8 @@ class Table
     @tdr_rows = DefaultingRowSet.new
     @expectations = expectations
     @fixture_rows = DefaultingRowSet.new
+
+    @expected_rows = []
   end
 
   def set_default(column,value)
@@ -27,7 +29,7 @@ class Table
   end
 
   def add_expected_row(node,column_values)
-    @expectations.add_row(node,column_values)
+    @expected_rows << @expectations.add_row(node,column_values)
     @tdr_rows.add_row(node,column_values)
   end
 
@@ -41,23 +43,16 @@ SQL
   end
 
   def check_expectations(database)
-    @failed_expectations = []
-    @expectations.where_clauses.map do |expectation|
-      begin
-        num = database.num_rows_match(@schema,@name,expectation)
-      rescue OdbcConnection::DatabaseException => e
-        @failed_expectations << "Expected one row to match #{expectation}, instead database raised error: #{e.message}"
-        next
-      end
-
-      if num != 1
-        @failed_expectations << "Expected one row to match #{expectation}, got #{num}"
-      end
-    end
+    @expectation_checker = ExpectationChecker.new(database)
+    @expectation_checker.check_expectations(@schema,@name,@expected_rows)
   end
 
   def validates_expectations?
-    @failed_expectations.empty?
+    @expectation_checker.validates_expectations?
+  end
+
+  def failed_expectations
+    @expectation_checker.failed_expectations
   end
 
 end

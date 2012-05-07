@@ -1,6 +1,7 @@
 require 'row'
 class DefaultingRowSet
   attr_accessor :defaults
+  attr_accessor :columns_in_order
 
   def initialize
     @defaults = Hash.new
@@ -19,6 +20,7 @@ class DefaultingRowSet
 
     create_missing_defaults(column_values.keys)
     @rows << Row.new(node,set_defaults_at_time_of_addition(column_values),self)
+    @rows.last
   end
 
   def columns
@@ -26,7 +28,7 @@ class DefaultingRowSet
   end
 
   def values
-    @rows.map {|r| r.row_values(@columns_in_order) }.join(",\n") 
+    @rows.map {|r| r.row_values }.join(",\n") 
   end
 
   def where_clauses
