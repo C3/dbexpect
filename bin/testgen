@@ -7,4 +7,4 @@ rescue LoadError
   require 'testgen'
 end
 
-TestDataGenerator.new("unused dsn").generate_data(ARGF.read)
+TestDataGenerator.new().generate_data(ARGF.read)

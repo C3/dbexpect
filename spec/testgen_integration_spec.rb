@@ -10,7 +10,7 @@ describe "TestGen" do
 
     @test_script = File.read('spec/fixtures/basic_test_defn.rb')
 
-    @it = TestDataGenerator.new("dsn",@output)
+    @it = TestDataGenerator.new(@output)
 
   end
 

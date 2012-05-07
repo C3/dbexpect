@@ -16,4 +16,9 @@ class TargetDatabase
   def num_rows_match(query)
     @connection.exec(query).count
   end
+
+  def close
+    @connection.close
+  end
+
 end

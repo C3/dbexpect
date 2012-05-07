@@ -6,8 +6,7 @@ require 'd_s_l_parser'
 
 class TestDataGenerator
 
-  def initialize(target_dsn, output = STDOUT)
-    @target_dsn = target_dsn
+  def initialize(output = STDOUT)
     @output = output
   end
 
@@ -17,12 +16,10 @@ class TestDataGenerator
     return 0
   end
 
-  def great_expectations(script, target_db = TargetDatabase.from_dsn(@target_dsn))
+  def great_expectations(script, target_db)
     eval_script(script)
 
     check_table_expectations(target_db)
-
-    target_db.close
 
     if validates_expectations?
       @output.puts "Passed all expectations\n"
