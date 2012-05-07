@@ -22,6 +22,8 @@ class TestDataGenerator
 
     check_table_expectations(target_db)
 
+    target_db.close
+
     if validates_expectations?
       @output.puts "Passed all expectations\n"
       return 0

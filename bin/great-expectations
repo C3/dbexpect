@@ -7,4 +7,4 @@ rescue LoadError
   require 'testgen'
 end
 
-TestDataGenerator.new(ARGV[0]).great_expectations(ARGF.read)
+TestDataGenerator.new(ARGV[1]).great_expectations(ARGF.read)

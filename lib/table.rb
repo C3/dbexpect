@@ -41,7 +41,7 @@ SQL
   def check_expectations(database)
     @failed_expectations = []
     @expectations.where_clauses.map do |expectation|
-      num = database.num_rows_match?(
+      num = database.num_rows_match(
         "select * from #{@schema}.#{@name} where (#{expectation})")
 
       if num != 1
