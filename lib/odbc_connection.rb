@@ -3,6 +3,8 @@ require 'yaml'
 require 'odbc'
 
 class OdbcConnection
+  class DatabaseException < Exception; end
+
   def initialize(dsn)
     db_config = YAML.load_file('database.yml')[dsn]
 
@@ -14,9 +16,14 @@ class OdbcConnection
   end
 
   def run(stmt)
-    query = @connection.run(stmt)
-    res = query.to_a
-    query.drop
+    begin
+      query = @connection.run(stmt)
+      res = query.to_a
+      query.drop
+    rescue ODBC::Error => e
+      raise DatabaseException.new(e.message)
+    end
     res
   end
+
 end

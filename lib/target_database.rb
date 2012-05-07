@@ -13,8 +13,8 @@ class TargetDatabase
     @connection = con
   end
 
-  def num_rows_match(query)
-    @connection.run(query).count
+  def num_rows_match(schema,table,query)
+    @connection.run("select * from #{schema}.#{table} where (#{query})").count
   end
 
   def close

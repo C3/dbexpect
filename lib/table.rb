@@ -1,11 +1,13 @@
 require 'defaulting_row_set'
 class Table
-  def initialize(schema,name)
+  attr_accessor :failed_expectations
+
+  def initialize(schema,name, expectations = DefaultingRowSet.new)
     @schema = schema
     @name = name
 
     @tdr_rows = DefaultingRowSet.new
-    @expectations = DefaultingRowSet.new
+    @expectations = expectations
     @fixture_rows = DefaultingRowSet.new
   end
 
@@ -41,8 +43,12 @@ SQL
   def check_expectations(database)
     @failed_expectations = []
     @expectations.where_clauses.map do |expectation|
-      num = database.num_rows_match(
-        "select * from #{@schema}.#{@name} where (#{expectation})")
+      begin
+        num = database.num_rows_match(@schema,@name,expectation)
+      rescue OdbcConnection::DatabaseException => e
+        @failed_expectations << "Expected one row to match #{expectation}, instead database raised error: #{e.message}"
+        next
+      end
 
       if num != 1
         @failed_expectations << "Expected one row to match #{expectation}, got #{num}"
