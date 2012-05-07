@@ -1,3 +1,4 @@
+require 'row'
 class DefaultingRowSet
   attr_accessor :rows
 
@@ -13,11 +14,11 @@ class DefaultingRowSet
     @defaults[column] = value
   end
 
-  def add_row(column_values)
+  def add_row(node,column_values)
     column_values.keys.map {|col| add_column(col) }
 
     create_missing_defaults(column_values.keys)
-    @rows << set_defaults_at_time_of_addition(column_values)
+    @rows << Row.new(node,set_defaults_at_time_of_addition(column_values))
   end
 
   def columns
@@ -30,7 +31,7 @@ class DefaultingRowSet
 
   def where_clauses
     @rows.map do |r|
-      values = @defaults.merge(r)
+      values = @defaults.merge(r.row)
       values.map {|col,value| "#{col} #{value.equality_test}" }.join(' AND ')
     end
   end
@@ -50,7 +51,7 @@ protected
   end
 
   def row_values(row)
-    values = @defaults.merge(row)
+    values = @defaults.merge(row.row)
     '(' + @columns_in_order.map {|col| values[col].db_str }.join(',') + ')'
   end
 

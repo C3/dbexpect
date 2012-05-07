@@ -1,7 +1,8 @@
+require 'tree_node'
 class DSLParser
   def initialize
     @tables = {}
-    @description_stack = []
+    @description_tree = TreeNode.new('->')
   end
 
   def parse(script)
@@ -18,9 +19,9 @@ protected
   end
 
   def describe(description,&block)
-    @description_stack << description
+    @description_tree = @description_tree.create_child(description)
     instance_eval(&block)
-    @description_stack.pop
+    @description_tree = @description_tree.parent
   end
 
   def defaults_for(table, columns)
@@ -48,7 +49,7 @@ protected
   def __add_rows(table, row_method, row_columns, rows)
     rows.each do |row_values|
       wrapped = row_values.map {|v| wrap(v) }
-      table.send(row_method,Hash[ row_columns.zip(wrapped)])
+      table.send(row_method,@description_tree,Hash[ row_columns.zip(wrapped)])
     end
   end
 

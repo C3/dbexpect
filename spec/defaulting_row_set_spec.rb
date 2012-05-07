@@ -11,7 +11,7 @@ describe DefaultingRowSet do
       @it.set_default(:column5,"hello")
       @it.set_default(:columnA,"hello")
 
-      @it.add_row(
+      @it.add_row('fake node',
         :column01 => 'new',
         :columnZ => 'not hello')
 

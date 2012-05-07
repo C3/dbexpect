@@ -21,14 +21,14 @@ class Table
     @tdr_rows.set_default(column,value)
   end
 
-  def add_row(column_values)
-    @tdr_rows.add_row(column_values)
-    @fixture_rows.add_row(column_values)
+  def add_row(node,column_values)
+    @tdr_rows.add_row(node,column_values)
+    @fixture_rows.add_row(node,column_values)
   end
 
-  def add_expected_row(column_values)
-    @expectations.add_row(column_values)
-    @tdr_rows.add_row(column_values)
+  def add_expected_row(node,column_values)
+    @expectations.add_row(node,column_values)
+    @tdr_rows.add_row(node,column_values)
   end
 
   def tdr_insert_stmt
