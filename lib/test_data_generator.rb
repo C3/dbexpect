@@ -31,6 +31,14 @@ class TestDataGenerator
     end
   end
 
+  def setup_test(script,target_db)
+    eval_script(script)
+    @tables.each do |table|
+      table.truncate(target_db)
+      table.insert_fixture_rows(target_db)
+    end
+  end
+
 
 protected
   def eval_script(script)

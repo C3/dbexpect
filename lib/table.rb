@@ -37,6 +37,16 @@ class Table
     @tdr_rows.insert_statements(@schema,@name)
   end
 
+  def truncate(database)
+    database.truncate_table(@schema,@name)
+  end
+
+  def insert_fixture_rows(database)
+    unless @fixture_rows.empty?
+      database.insert_rows(@fixture_rows.insert_statements(@schema,@name))
+    end
+  end
+
   def check_expectations(database)
     @expectation_checker = ExpectationChecker.new(database)
     @expectation_checker.check_expectations(@schema,@name,@expected_rows)

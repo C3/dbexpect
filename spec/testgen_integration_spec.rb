@@ -45,9 +45,33 @@ describe "TestGen" do
     end
   end
 
+  describe "setting up a database for a test" do
+    before :each do
+      @target_db = Database.from_connection(@db)
+      @it.generate_data(@test_script)
+      @output.rewind
+      @db.run(@output.read)
+
+      @it.setup_test(@test_script,@target_db)
+    end
+
+    it "should truncate the source tables and add the fixture rows" do
+
+      @db.run('select * from source.src_table').to_a.should ==
+        [
+          ["default string", 7, nil],
+          ["overridden string", 1, "not null"] ]
+    end
+
+    it "should truncate the expected rows tables" do
+      @db.run('select * from target.tgt_table').to_a.should ==
+        []
+    end
+  end
+
   describe "validating expectations" do
     before :each do
-      @target_db = TargetDatabase.from_connection(@db)
+      @target_db = Database.from_connection(@db)
 
       @it.generate_data(@test_script)
       @output.rewind
