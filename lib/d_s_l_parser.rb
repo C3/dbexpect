@@ -3,6 +3,7 @@ class DSLParser
   def initialize
     @tables = {}
     @description_tree = RowTreeNode.new('->')
+    @files_loaded = Set.new
   end
 
   def parse(script)
@@ -15,7 +16,10 @@ class DSLParser
 
 protected
   def requires(file)
-    instance_eval(File.read(file))
+    unless @files_loaded.include?(file)
+      instance_eval(File.read(file))
+    end
+    @files_loaded << file
   end
 
   def describe(description,&block)
