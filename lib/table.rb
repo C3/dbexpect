@@ -34,12 +34,7 @@ class Table
   end
 
   def tdr_insert_stmt
-    return '' if @tdr_rows.empty?
-
-    stmt = <<SQL
-INSERT INTO #{@schema}.#{@name} (#{@tdr_rows.columns})
-VALUES #{@tdr_rows.values};
-SQL
+    @tdr_rows.insert_statements(@schema,@name)
   end
 
   def check_expectations(database)

@@ -28,7 +28,18 @@ class DefaultingRowSet
   end
 
   def values
-    @rows.map {|r| r.row_values }.join(",\n") 
+    @rows.map {|r| r.row_values }
+  end
+
+  def insert_statements(schema,name)
+    return '' if empty?
+
+    @rows.collect do |row|
+      stmt = <<SQL
+INSERT INTO #{schema}.#{name} (#{row.columns.join(',')})
+VALUES #{row.row_values};
+SQL
+    end.join("\n")
   end
 
   def where_clauses
