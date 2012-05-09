@@ -37,6 +37,7 @@ class TestDataGenerator
       table.truncate(target_db)
       table.insert_fixture_rows(target_db)
     end
+    return 0
   end
 
 

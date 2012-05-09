@@ -18,7 +18,11 @@ class Database
   end
 
   def truncate_table(schema,name)
-    @connection.run("truncate table #{schema}.#{name}")
+    if @connection.type == 'db2'
+      @connection.run("truncate table #{schema}.#{name} immediate")
+    else
+      @connection.run("truncate table #{schema}.#{name}")
+    end
   end
 
   def insert_rows(insert_statements)
