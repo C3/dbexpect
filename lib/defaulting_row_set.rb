@@ -28,10 +28,7 @@ class DefaultingRowSet
     return '' if empty?
 
     @rows.collect do |row|
-      stmt = <<SQL
-INSERT INTO #{schema}.#{name} (#{row.columns})
-VALUES #{row.row_values};
-SQL
+      row.insert_stmt(schema,name)
     end.join("\n")
   end
 

@@ -6,6 +6,13 @@ class Row
     @column_order = column_order
   end
 
+  def insert_stmt(schema,name)
+      stmt = <<SQL
+INSERT INTO #{schema}.#{name} (#{columns})
+VALUES #{row_values};
+SQL
+  end
+
   def row_values
     '(' + @column_order.map {|col| row[col].db_str }.join(',') + ')'
   end
