@@ -93,5 +93,17 @@ describe "TestGen" do
       @it.great_expectations(@test_script,@target_db).should == 1
     end
 
+    it "should be happy if row counts are correct" do
+      @db.run(@some_inserts)
+      @it.great_expectations("expect_total_rows table(:target,:tgt_table), 5",
+                             @target_db).should == 0
+    end
+
+    it "should whine if row counts are off" do
+      @db.run(@some_inserts)
+      @it.great_expectations("expect_total_rows table(:target,:tgt_table), 10",
+                             @target_db).should == 1
+    end
+
   end
 end

@@ -26,6 +26,10 @@ protected
     table.dirty = true
   end
 
+  def expect_total_rows(table, count)
+    table.row_count_check = count
+  end
+
   def describe(description,&block)
     @description_tree = @description_tree.create_child(description)
     instance_eval(&block)

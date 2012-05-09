@@ -12,6 +12,7 @@ class Table
 
     @expected_rows = []
     @dirty = false
+    @row_count_check = false
   end
 
   def set_default(column,value)
@@ -46,9 +47,13 @@ class Table
     database.insert_rows(@fixture_rows.insert_statements(@schema,@name))
   end
 
+  attr_writer :row_count_check
   def check_expectations(database)
-    @expectation_checker = ExpectationChecker.new(database)
-    @expectation_checker.check_expectations(@schema,@name,@expected_rows)
+    @expectation_checker = ExpectationChecker.new(database,@schema,@name)
+    @expectation_checker.check_expectations(@expected_rows)
+    if @row_count_check
+      @expectation_checker.check_row_count(@row_count_check)
+    end
   end
 
   def validates_expectations?
