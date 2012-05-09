@@ -2,6 +2,7 @@ require 'row'
 class DefaultingRowSet
   attr_accessor :defaults
   attr_accessor :columns_in_order
+  attr_accessor :rows
 
   def initialize
     @defaults = Hash.new
@@ -18,17 +19,9 @@ class DefaultingRowSet
   def add_row(node,column_values)
     column_values.keys.map {|col| add_column(col) }
 
-    create_missing_defaults(column_values.keys)
-    @rows << Row.new(node,set_defaults_at_time_of_addition(column_values),self)
+    defaulted_row = set_defaults_at_time_of_addition(column_values)
+    @rows << Row.new(node,defaulted_row,@columns_in_order & defaulted_row.keys)
     @rows.last
-  end
-
-  def columns
-    @columns_in_order.join(',')
-  end
-
-  def values
-    @rows.map {|r| r.row_values }
   end
 
   def insert_statements(schema,name)
@@ -36,7 +29,7 @@ class DefaultingRowSet
 
     @rows.collect do |row|
       stmt = <<SQL
-INSERT INTO #{schema}.#{name} (#{row.columns.join(',')})
+INSERT INTO #{schema}.#{name} (#{row.columns})
 VALUES #{row.row_values};
 SQL
     end.join("\n")
@@ -60,8 +53,5 @@ protected
     @defaults.merge(row)
   end
 
-  def create_missing_defaults(columns)
-    columns.each {|c| @defaults[c] ||= DbNull.new }
-  end
 
 end

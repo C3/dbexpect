@@ -15,7 +15,7 @@ describe DefaultingRowSet do
         :column01 => 'new',
         :columnZ => 'not hello')
 
-      @it.columns.should == 'columnZ,column5,columnA,column01'
+      @it.rows.first.columns.should == 'columnZ,column5,columnA,column01'
     end
   end
 end

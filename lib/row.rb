@@ -1,25 +1,21 @@
 class Row
   attr_accessor :row
-  def initialize(node,row,defaults_src)
+  def initialize(node,row,column_order)
     @node = node
     @row = row
-    @defaults_src = defaults_src
+    @column_order = column_order
   end
 
   def row_values
-    '(' + row.values.map {|val| val.db_str }.join(',') + ')'
+    '(' + @column_order.map {|col| row[col].db_str }.join(',') + ')'
   end
 
   def where_clause
-    row.map {|col, value| "#{col} #{value.equality_test}" }.join(' AND ')
-  end
-
-  def columns_in_order
-    @defaults_src.columns_in_order
+    @column_order.map {|col| "#{col} #{row[col].equality_test}" }.join(' AND ')
   end
 
   def columns
-    @row.keys
+    @column_order.join(',')
   end
 
 end
