@@ -19,6 +19,7 @@ class OdbcConnection
   end
 
   def run(stmt)
+    return [] if stmt.empty?
     begin
       query = @connection.run(stmt)
       res = query.to_a

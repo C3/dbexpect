@@ -11,6 +11,7 @@ class Table
     @fixture_rows = DefaultingRowSet.new
 
     @expected_rows = []
+    @dirty = false
   end
 
   def set_default(column,value)
@@ -37,14 +38,12 @@ class Table
     @tdr_rows.insert_statements(@schema,@name)
   end
 
-  def truncate(database)
-    database.truncate_table(@schema,@name)
-  end
-
-  def insert_fixture_rows(database)
-    unless @fixture_rows.empty?
-      database.insert_rows(@fixture_rows.insert_statements(@schema,@name))
+  attr_writer :dirty
+  def set_up_for_test(database)
+    unless @dirty
+      database.truncate_table(@schema,@name)
     end
+    database.insert_rows(@fixture_rows.insert_statements(@schema,@name))
   end
 
   def check_expectations(database)

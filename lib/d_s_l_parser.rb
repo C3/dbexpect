@@ -22,6 +22,10 @@ protected
     @files_loaded << file
   end
 
+  def dirty(table)
+    table.dirty = true
+  end
+
   def describe(description,&block)
     @description_tree = @description_tree.create_child(description)
     instance_eval(&block)
