@@ -1,4 +1,6 @@
 require 'row_tree_node'
+require 'set'
+
 class DSLParser
   def initialize
     @tables = {}
