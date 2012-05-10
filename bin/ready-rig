@@ -6,6 +6,5 @@ rescue LoadError
   $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
   require 'testgen'
 end
-
 db = Database.from_dsn(ARGV.shift)
-exit(TestDataGenerator.new().setup_test(ARGF.read,target_db))
+exit(TestDataGenerator.new().setup_test(ARGF.read,db))
