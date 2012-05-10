@@ -36,7 +36,7 @@ class Table
   end
 
   def tdr_insert_stmt
-    @tdr_rows.insert_statements(@schema,@name)
+    @tdr_rows.insert_statements(@schema,@name).map {|stmt| stmt + ';' }.join("\n")
   end
 
   attr_writer :dirty

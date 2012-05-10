@@ -25,11 +25,9 @@ class DefaultingRowSet
   end
 
   def insert_statements(schema,name)
-    return '' if empty?
-
     @rows.collect do |row|
       row.insert_stmt(schema,name)
-    end.join("\n")
+    end
   end
 
   def where_clauses

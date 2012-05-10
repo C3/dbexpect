@@ -9,7 +9,7 @@ class Row
   def insert_stmt(schema,name)
       stmt = <<SQL
 INSERT INTO #{schema}.#{name} (#{columns})
-VALUES #{row_values};
+VALUES #{row_values}
 SQL
   end
 

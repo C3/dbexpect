@@ -26,7 +26,9 @@ class Database
   end
 
   def insert_rows(insert_statements)
-    @connection.run(insert_statements)
+    insert_statements.each do |stmt|
+      @connection.run(stmt)
+    end
   end
 
   def close
