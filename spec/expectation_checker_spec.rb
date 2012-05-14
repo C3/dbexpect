@@ -13,16 +13,6 @@ describe ExpectationChecker do
       mock(:where_clause => where_clause)
     end
 
-    it "should check row counts" do
-      @db.should_receive(:num_rows_match).with('schema','tablename','1=1').
-        and_return(7)
-
-      @it.check_row_count(5)
-      @it.failed_expectations.should == [
-        "Expected 5 rows to match 1=1, got 7",
-      ]
-    end
-
     it "should gather failure messages for failed expectations" do
       @expected_rows << stub_row('clause1')
       @expected_rows << stub_row('clause2')

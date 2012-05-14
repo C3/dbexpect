@@ -7,13 +7,17 @@ class ExpectationChecker
     @failed_expectations = []
   end
 
-  def check_row_count(row_count)
-    check_expectation('1=1',row_count)
-  end
-
-  def check_expectations(expected_rows)
-    expected_rows.map(&:where_clause).map do |expectation|
-      check_expectation(expectation,1)
+  def check_expectations(expectations)
+    expectations.each do |expectation|
+      case expectation
+      when RowCountExpectation
+        expectation.validate_expectation(@db)
+        if expectation.failed_validation?
+          @failed_expectations << expectation.failure_message
+        end
+      else
+        check_expectation(expectation.where_clause,1)
+      end
     end
   end
 

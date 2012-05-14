@@ -1,5 +1,7 @@
 require 'defaulting_row_set'
 require 'expectation_checker'
+require 'expectations/row_count_expectation'
+
 class Table
 
   def initialize(schema,name, expectations = DefaultingRowSet.new)
@@ -51,10 +53,10 @@ class Table
   attr_writer :row_count_check
   def check_expectations(database)
     @expectation_checker = ExpectationChecker.new(database,@schema,@name)
-    @expectation_checker.check_expectations(@expected_rows)
-    if @row_count_check
-      @expectation_checker.check_row_count(@row_count_check)
-    end
+    expects = @expected_rows
+    expects << RowCountExpectation.new(@schema,@name,@row_count_check) if @row_count_check
+
+    @expectation_checker.check_expectations(expects)
   end
 
   def validates_expectations?
