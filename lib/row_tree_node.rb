@@ -1,10 +1,16 @@
 class RowTreeNode
+  include Enumerable
 
   def initialize(desc, parent = nil)
     @description = desc
     @children = []
     @parent = parent
     @rows = []
+  end
+
+  def each(&block)
+    @rows.each {|r| block.call(r) }
+    @children.each {|c| c.each(&block) }
   end
 
   def parent
