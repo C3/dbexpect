@@ -6,14 +6,11 @@ class ExpectationChecker
   end
 
   def check_expectations(expectations)
-    expectations.each do |expect_node|
-      expect_node.expectations.each do |expectation|
-        expectation.validate_expectation(@db)
-        if expectation.failed_validation?
-          @failed_expectations << expectation.failure_message
-        end
-      end
-    end
+    expectations.map {|e| e.validate_expectation(@db) }
+
+    failure_tree = expectations.select {|e| e.failed_validation? }
+
+    @failed_expectations = failure_tree.collect(&:failure_message)
   end
 
   def validates_expectations?
