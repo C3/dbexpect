@@ -45,6 +45,7 @@ protected
     parser = DSLParser.new
     parser.parse(script)
     @tables = parser.tables
+    @expected_rows_tree = parser.expected_rows_tree
   end
 
   def print_tdr_inserts

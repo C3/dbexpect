@@ -25,7 +25,7 @@ class Table
     @tdr_rows.set_default(column,value)
   end
 
-  def add_row(node,column_values)
+  def add_fixture_row(node,column_values)
     @tdr_rows.add_row(node,column_values)
     @fixture_rows.add_row(node,column_values)
   end
@@ -33,6 +33,7 @@ class Table
   def add_expected_row(node,column_values)
     @expected_rows << @expectations.add_row(node,column_values)
     @tdr_rows.add_row(node,column_values)
+    @expected_rows.last
   end
 
   def tdr_insert_stmt

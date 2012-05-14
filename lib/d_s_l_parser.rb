@@ -2,9 +2,11 @@ require 'row_tree_node'
 require 'set'
 
 class DSLParser
+  attr_accessor :expected_rows_tree
+
   def initialize
     @tables = {}
-    @description_tree = RowTreeNode.new('->')
+    @expected_rows_tree = RowTreeNode.new('->')
     @files_loaded = Set.new
   end
 
@@ -33,9 +35,9 @@ protected
   end
 
   def describe(description,&block)
-    @description_tree = @description_tree.create_child(description)
+    @expected_rows_tree = @expected_rows_tree.create_child(description)
     instance_eval(&block)
-    @description_tree = @description_tree.parent
+    @expected_rows_tree = @expected_rows_tree.parent
   end
 
   def defaults_for(table, columns)
@@ -53,15 +55,15 @@ protected
   end
 
   def insert_into(table,row_columns,rows)
-    __add_rows(table, :add_row, row_columns, rows)
+    __add_rows(table, :add_fixture_row, row_columns, rows)
   end
 
   def expect_rows(table, row_columns, rows)
-    __add_rows(table, :add_expected_row, row_columns, rows)
+    @expected_rows_tree.add __add_rows(table, :add_expected_row, row_columns, rows)
   end
 
   def __add_rows(table, row_method, row_columns, rows)
-    rows.each do |row_values|
+    rows.collect do |row_values|
       wrapped = row_values.map {|v| wrap(v) }
       table.send(row_method,@description_tree,Hash[ row_columns.zip(wrapped)])
     end
