@@ -65,7 +65,7 @@ protected
   def __add_rows(table, row_method, row_columns, rows)
     rows.collect do |row_values|
       wrapped = row_values.map {|v| wrap(v) }
-      table.send(row_method,@description_tree,Hash[ row_columns.zip(wrapped)])
+      table.send(row_method,Hash[ row_columns.zip(wrapped)])
     end
   end
 

@@ -1,7 +1,6 @@
 class Row
   attr_accessor :row
-  def initialize(node,row,column_order)
-    @node = node
+  def initialize(row,column_order)
     @row = row
     @column_order = column_order
   end

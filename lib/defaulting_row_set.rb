@@ -16,11 +16,11 @@ class DefaultingRowSet
     @defaults[column] = value
   end
 
-  def add_row(node,column_values)
+  def add_row(column_values)
     column_values.keys.map {|col| add_column(col) }
 
     defaulted_row = set_defaults_at_time_of_addition(column_values)
-    @rows << Row.new(node,defaulted_row,@columns_in_order & defaulted_row.keys)
+    @rows << Row.new(defaulted_row,@columns_in_order & defaulted_row.keys)
     @rows.last
   end
 

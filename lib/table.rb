@@ -28,14 +28,14 @@ class Table
     @tdr_rows.set_default(column,value)
   end
 
-  def add_fixture_row(node,column_values)
-    @tdr_rows.add_row(node,column_values)
-    @fixture_rows.add_row(node,column_values)
+  def add_fixture_row(column_values)
+    @tdr_rows.add_row(column_values)
+    @fixture_rows.add_row(column_values)
   end
 
-  def add_expected_row(node,column_values)
-    @tdr_rows.add_row(node,column_values)
-    new_expectation(@expected_row_factory.add_row(node,column_values))
+  def add_expected_row(column_values)
+    @tdr_rows.add_row(column_values)
+    new_expectation(@expected_row_factory.add_row(column_values))
   end
 
   def new_expectation(row)
