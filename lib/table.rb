@@ -13,8 +13,6 @@ class Table
     @expected_row_factory = DefaultingRowSet.new
     @fixture_rows = DefaultingRowSet.new
 
-    @expectations = []
-
     @expected_rows = []
     @dirty = false
     @row_count_check = false
@@ -36,10 +34,8 @@ class Table
   end
 
   def add_expected_row(node,column_values)
-    @expectations << new_expectation(@expected_row_factory.add_row(node,column_values))
     @tdr_rows.add_row(node,column_values)
-
-    @expectations.last
+    new_expectation(@expected_row_factory.add_row(node,column_values))
   end
 
   def new_expectation(row)
@@ -59,25 +55,13 @@ class Table
   end
 
   attr_writer :row_count_check
-  def expectations
+
+  def table_expectations
     if @row_count_check
-      @expectations.clone << RowCountExpectation.new(@schema,@name,@row_count_check)
+      [RowCountExpectation.new(@schema,@name,@row_count_check)]
     else
-      @expectations
+      []
     end
-  end
-
-  def check_expectations(database)
-    @expectation_checker = ExpectationChecker.new(database)
-    @expectation_checker.check_expectations(expectations)
-  end
-
-  def validates_expectations?
-    @expectation_checker.validates_expectations?
-  end
-
-  def failed_expectations
-    @expectation_checker.failed_expectations
   end
 
 end

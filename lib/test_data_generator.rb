@@ -3,6 +3,7 @@ require 'db_null'
 require 'db_string'
 require 'table'
 require 'd_s_l_parser'
+require 'expectation_checker'
 
 class TestDataGenerator
 
@@ -45,7 +46,7 @@ protected
     parser = DSLParser.new
     parser.parse(script)
     @tables = parser.tables
-    @expected_rows_tree = parser.expected_rows_tree
+    @expectations_tree = parser.expected_rows_tree
   end
 
   def print_tdr_inserts
@@ -55,15 +56,17 @@ protected
   end
 
   def check_table_expectations(database)
-    @tables.map {|t| t.check_expectations(database) }
+    @expectations_checker = ExpectationChecker.new(database)
+    all_expectations = @expectations_tree.to_a + @tables.map(&:table_expectations).flatten
+    @expectations_checker.check_expectations(all_expectations)
   end
 
   def failed_expectations
-    @tables.collect(&:failed_expectations).flatten
+    @expectations_checker.failed_expectations
   end
 
   def validates_expectations?
-    @tables.all? {|t| t.validates_expectations? }
+    @expectations_checker.validates_expectations?
   end
 
 end
