@@ -1,12 +1,12 @@
-require 'row_tree_node'
+require 'expectation_tree_node'
 require 'set'
 
 class DSLParser
-  attr_accessor :expected_rows_tree
+  attr_accessor :expectation_tree
 
   def initialize
     @tables = {}
-    @expected_rows_tree = RowTreeNode.new('->')
+    @expectation_tree = ExpectationTreeNode.new('->')
     @files_loaded = Set.new
   end
 
@@ -31,13 +31,13 @@ protected
   end
 
   def expect_total_rows(table, count)
-    table.row_count_check = count
+    @expectation_tree.add([table.row_count_check(count)])
   end
 
   def describe(description,&block)
-    @expected_rows_tree = @expected_rows_tree.create_child(description)
+    @expectation_tree = @expectation_tree.create_child(description)
     instance_eval(&block)
-    @expected_rows_tree = @expected_rows_tree.parent
+    @expectation_tree = @expectation_tree.parent
   end
 
   def defaults_for(table, columns)
@@ -59,7 +59,7 @@ protected
   end
 
   def expect_rows(table, row_columns, rows)
-    @expected_rows_tree.add __add_rows(table, :add_expected_row, row_columns, rows)
+    @expectation_tree.add __add_rows(table, :add_expected_row, row_columns, rows)
   end
 
   def __add_rows(table, row_method, row_columns, rows)

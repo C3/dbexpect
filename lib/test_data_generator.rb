@@ -46,7 +46,7 @@ protected
     parser = DSLParser.new
     parser.parse(script)
     @tables = parser.tables
-    @expectations_tree = parser.expected_rows_tree
+    @expectation_tree = parser.expectation_tree
   end
 
   def print_tdr_inserts
@@ -56,17 +56,16 @@ protected
   end
 
   def check_table_expectations(database)
-    @expectations_checker = ExpectationChecker.new(database)
-    all_expectations = @expectations_tree.to_a + @tables.map(&:table_expectations).flatten
-    @expectations_checker.check_expectations(all_expectations)
+    @expectation_checker = ExpectationChecker.new(database)
+    @expectation_checker.check_expectations(@expectation_tree)
   end
 
   def failed_expectations
-    @expectations_checker.failed_expectations
+    @expectation_checker.failed_expectations
   end
 
   def validates_expectations?
-    @expectations_checker.validates_expectations?
+    @expectation_checker.validates_expectations?
   end
 
 end

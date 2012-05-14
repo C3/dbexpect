@@ -1,15 +1,17 @@
-class RowTreeNode
+class ExpectationTreeNode
   include Enumerable
 
+  attr_accessor :expectations
+  attr_accessor :description
   def initialize(desc, parent = nil)
     @description = desc
     @children = []
     @parent = parent
-    @rows = []
+    @expectations = []
   end
 
   def each(&block)
-    @rows.each {|r| block.call(r) }
+    block.call(self)
     @children.each {|c| c.each(&block) }
   end
 
@@ -19,12 +21,12 @@ class RowTreeNode
   end
 
   def create_child(desc)
-    @children << RowTreeNode.new(desc,self)
+    @children << ExpectationTreeNode.new(desc,self)
     @children.last
   end
 
-  def add(rows)
-    @rows += rows
+  def add(expectations)
+    @expectations += expectations
   end
 
 end

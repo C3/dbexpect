@@ -13,9 +13,7 @@ class Table
     @expected_row_factory = DefaultingRowSet.new
     @fixture_rows = DefaultingRowSet.new
 
-    @expected_rows = []
     @dirty = false
-    @row_count_check = false
   end
 
   def set_default(column,value)
@@ -54,14 +52,8 @@ class Table
     database.insert_rows(@fixture_rows.insert_statements(@schema,@name))
   end
 
-  attr_writer :row_count_check
-
-  def table_expectations
-    if @row_count_check
-      [RowCountExpectation.new(@schema,@name,@row_count_check)]
-    else
-      []
-    end
+  def row_count_check(count)
+    RowCountExpectation.new(@schema,@name,count)
   end
 
 end

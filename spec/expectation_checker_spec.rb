@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe ExpectationChecker do
   describe "validating expectations against the database" do
     before :each do
-      @expectations = []
+      @expectations = ExpectationTreeNode.new('root')
       @db = mock
 
       @it = ExpectationChecker.new(@db)
@@ -12,13 +12,13 @@ describe ExpectationChecker do
     def stub_expectation(failure_msg)
       m = mock(:failed_validation? => !failure_msg.nil?, :failure_message => failure_msg)
       m.should_receive(:validate_expectation).with(@db)
-      m
+      [m]
     end
 
     it "should gather failure messages for failed expectations" do
-      @expectations << stub_expectation('failure 1')
-      @expectations << stub_expectation(nil)
-      @expectations << stub_expectation('failure 2')
+      @expectations.add stub_expectation('failure 1')
+      @expectations.add stub_expectation(nil)
+      @expectations.add stub_expectation('failure 2')
 
       @it.check_expectations(@expectations)
       @it.failed_expectations.should == [
