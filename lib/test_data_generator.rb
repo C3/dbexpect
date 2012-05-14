@@ -4,11 +4,12 @@ require 'db_string'
 require 'table'
 require 'd_s_l_parser'
 require 'expectation_checker'
+require 'console_formatter'
 
 class TestDataGenerator
 
   def initialize(output = STDOUT)
-    @output = output
+    @output = ConsoleFormatter.new(output)
   end
 
   def generate_data(script)
@@ -23,11 +24,10 @@ class TestDataGenerator
     check_table_expectations(target_db)
 
     if validates_expectations?
-      @output.puts "Passed all expectations\n"
+      @output.notify_passed
       return 0
     else
-      @output.puts failed_expectations.join("\n")
-      @output.puts "Failed to meet expectations\n"
+      @output.notify_failed(failed_expectations)
       return 1
     end
   end
@@ -51,7 +51,7 @@ protected
 
   def print_tdr_inserts
     @tables.each do |table|
-      @output.puts table.tdr_insert_stmt
+      @output.format_sql(table.tdr_insert_stmt)
     end
   end
 
