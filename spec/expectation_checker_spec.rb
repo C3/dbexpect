@@ -3,42 +3,29 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe ExpectationChecker do
   describe "validating expectations against the database" do
     before :each do
-      @expected_rows = []
+      @expectations = []
       @db = mock
 
-      @it = ExpectationChecker.new(@db,'schema','tablename')
+      @it = ExpectationChecker.new(@db)
     end
 
-    def stub_row(where_clause)
-      mock(:where_clause => where_clause)
+    def stub_expectation(failure_msg)
+      m = mock(:failed_validation? => !failure_msg.nil?, :failure_message => failure_msg)
+      m.should_receive(:validate_expectation).with(@db)
+      m
     end
 
     it "should gather failure messages for failed expectations" do
-      @expected_rows << stub_row('clause1')
-      @expected_rows << stub_row('clause2')
+      @expectations << stub_expectation('failure 1')
+      @expectations << stub_expectation(nil)
+      @expectations << stub_expectation('failure 2')
 
-      @db.should_receive(:num_rows_match).with('schema','tablename','clause1').
-        and_return(2)
-      @db.should_receive(:num_rows_match).with('schema','tablename','clause2').
-        and_return(0)
-
-      @it.check_expectations(@expected_rows)
+      @it.check_expectations(@expectations)
       @it.failed_expectations.should == [
-        "Expected 1 row to match clause1, got 2",
-        "Expected 1 row to match clause2, got 0"
+        "failure 1",
+        "failure 2"
       ]
     end
 
-    it "should gather failure messages for exception-causing" do
-      @expected_rows << stub_row('bad query')
-
-      @db.should_receive(:num_rows_match).with('schema','tablename','bad query').
-        and_raise(OdbcConnection::DatabaseException.new('error message'))
-
-      @it.check_expectations(@expected_rows)
-      @it.failed_expectations.should == [
-        "Expected 1 row to match bad query, instead database raised error: error message",
-      ]
-    end
   end
 end
