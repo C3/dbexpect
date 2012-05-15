@@ -79,7 +79,10 @@ describe "TestGen" do
     end
 
     it "should fail if zero expected rows exist" do
+      @output.rewind
       @it.great_expectations(@test_script,@target_db).should == 1
+      @output.rewind
+      @output.read.should == File.read('spec/fixtures/expected_output.txt')
     end
 
     it "should pass if exactly correct" do
@@ -104,6 +107,7 @@ describe "TestGen" do
       @it.great_expectations("expect_total_rows table(:target,:tgt_table), 10",
                              @target_db).should == 1
     end
+
 
   end
 end

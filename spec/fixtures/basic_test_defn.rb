@@ -8,6 +8,7 @@ describe "our basic test definition test" do
     :str_column => 'defaulted in script',
     :int_column => 5
 
+  expect_total_rows @tgt, 5
 
   describe "test case 1" do
     insert_into @src,

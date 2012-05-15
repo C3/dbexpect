@@ -1,0 +1,11 @@
+->:
+  our basic test definition test:
+   Expected target.tgt_table to contain 5 rows, got 0
+    test case 1:
+     Expected target.tgt_table to contain a row where str_column  = 'defaulted in script' AND int_column  = '1' AND nullable_col is null, got 0
+     Expected target.tgt_table to contain a row where str_column  = 'defaulted in script' AND int_column  = '2' AND nullable_col is null, got 0
+     Expected target.tgt_table to contain a row where str_column  = 'defaulted in script' AND int_column  = '3' AND nullable_col is null, got 0
+     Expected target.tgt_table to contain a row where str_column  = 'defaulted in script' AND int_column  = '4' AND nullable_col  = '4', got 0
+    nested definition:
+     Expected target.tgt_table to contain a row where str_column  = 'special row' AND int_column  = '5' AND nullable_col  = '6', got 0
+Failed to meet expectations
