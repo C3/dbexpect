@@ -45,5 +45,7 @@ class ExpectationTreeNode
     include Enumerable
     def each(&block); end
     def empty?; true; end
+    def traverse(depth = 0, &block)
+    end
   end
 end
