@@ -34,8 +34,13 @@ class ExpectationTreeNode
     @expectations += expectations
   end
 
+  def empty?
+    @expectations.empty? && @children.all?(&:empty?)
+  end
+
   class EmptyTreeNode
     include Enumerable
     def each(&block); end
+    def empty?; true; end
   end
 end

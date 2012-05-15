@@ -21,7 +21,7 @@ describe ExpectationChecker do
       @expectations.add stub_expectation('failure 2')
 
       @it.check_expectations(@expectations)
-      @it.failed_expectations.should == [
+      @it.failed_expectations.collect(&:failure_message).should == [
         "failure 1",
         "failure 2"
       ]

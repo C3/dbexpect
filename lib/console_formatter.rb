@@ -8,7 +8,7 @@ class ConsoleFormatter
   end
 
   def notify_failed(failed_expectations)
-    @output.puts failed_expectations.join("\n")
+    @output.puts failed_expectations.collect(&:failure_message).join("\n")
     @output.puts "Failed to meet expectations\n"
   end
 
