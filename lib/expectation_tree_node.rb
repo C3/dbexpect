@@ -1,8 +1,6 @@
 class ExpectationTreeNode
   include Enumerable
 
-  attr_accessor :expectations
-  attr_accessor :description
   def initialize(desc,children = [], expectations = [])
     @description = desc
     @children = children
@@ -36,6 +34,11 @@ class ExpectationTreeNode
 
   def empty?
     @expectations.empty? && @children.all?(&:empty?)
+  end
+
+  def traverse(depth = 0, &block)
+    block.call(depth,@description,@expectations)
+    @children.map {|c| c.traverse(depth + 1, &block) }
   end
 
   class EmptyTreeNode
