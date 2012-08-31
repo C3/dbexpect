@@ -1,4 +1,4 @@
-require 'expectations/expectation'
+require_relative 'expectation'
 class RowCountExpectation < Expectation
   def initialize(schema,table,count)
     @count = count

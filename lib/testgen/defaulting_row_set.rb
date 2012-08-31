@@ -1,4 +1,4 @@
-require 'row'
+require_relative 'row'
 class DefaultingRowSet
   attr_accessor :defaults
   attr_accessor :columns_in_order

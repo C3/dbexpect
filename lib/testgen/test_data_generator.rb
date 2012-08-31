@@ -1,10 +1,10 @@
-require 'db_sequence'
-require 'db_null'
-require 'db_string'
-require 'table'
-require 'd_s_l_parser'
-require 'expectation_checker'
-require 'console_formatter'
+require_relative 'db_sequence'
+require_relative 'db_null'
+require_relative 'db_string'
+require_relative 'table'
+require_relative 'd_s_l_parser'
+require_relative 'expectation_checker'
+require_relative 'console_formatter'
 
 class TestDataGenerator
 

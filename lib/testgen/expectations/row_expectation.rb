@@ -1,4 +1,4 @@
-require 'expectations/expectation'
+require_relative 'expectation'
 class RowExpectation < Expectation
   def initialize(schema,table,row_data)
     @row = row_data

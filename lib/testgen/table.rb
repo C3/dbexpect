@@ -1,7 +1,7 @@
-require 'defaulting_row_set'
-require 'expectation_checker'
-require 'expectations/row_count_expectation'
-require 'expectations/row_expectation'
+require_relative 'defaulting_row_set'
+require_relative 'expectation_checker'
+require_relative 'expectations/row_count_expectation'
+require_relative 'expectations/row_expectation'
 
 class Table
 

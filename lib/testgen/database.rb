@@ -1,4 +1,4 @@
-require 'odbc_connection'
+require_relative 'odbc_connection'
 
 class Database
   def self.from_dsn(dsn)

@@ -1,4 +1,4 @@
-require 'expectation_tree_node'
+require_relative 'expectation_tree_node'
 require 'set'
 
 class DSLParser
