@@ -44,7 +44,7 @@ class TestDataGenerator
 protected
   def eval_script(script)
     parser = DSLParser.new
-    parser.parse(script)
+    parser.parse(File.read(script))
     @tables = parser.tables
     @expectation_tree = parser.expectation_tree
   end

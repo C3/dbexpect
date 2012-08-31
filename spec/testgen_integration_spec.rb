@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'rubygems'
 require 'odbc'
 require 'pry'
+require 'tempfile'
 
 describe "TestGen" do
   before :each do
@@ -11,14 +12,32 @@ describe "TestGen" do
 
     @output = StringIO.new
 
-    @test_script = File.read('spec/fixtures/basic_test_defn.rb')
+    @test_script = 'spec/fixtures/basic_test_defn.rb'
+    @test_script2 = 'spec/fixtures/test_script2.rb'
 
     @it = TestDataGenerator.new(@output)
+  end
 
+  def tempfile(content)
+    f = Tempfile.new('tempfile')
+    f.write content
+    f.close
+    f.path
   end
 
   after :each do
     @db.run(File.read('spec/fixtures/cleanup_db.sql'))
+  end
+
+  describe "running test scripts one after the other" do
+    it "should not maintain state across tests" do
+
+      @it.generate_data(@test_script2)
+      @output.rewind
+      @it.generate_data(@test_script)
+      @output.rewind
+      @output.read.should_not =~ /test_script2_col/
+    end
   end
 
   describe "generating inserts for a TDR from scripts" do
@@ -98,13 +117,13 @@ describe "TestGen" do
 
     it "should be happy if row counts are correct" do
       @db.run(@some_inserts)
-      @it.great_expectations("expect_total_rows table(:target,:tgt_table), 5",
+      @it.great_expectations(tempfile("expect_total_rows table(:target,:tgt_table), 5"),
                              @target_db).should == 0
     end
 
     it "should whine if row counts are off" do
       @db.run(@some_inserts)
-      @it.great_expectations("expect_total_rows table(:target,:tgt_table), 10",
+      @it.great_expectations(tempfile("expect_total_rows table(:target,:tgt_table), 10"),
                              @target_db).should == 1
     end
 
