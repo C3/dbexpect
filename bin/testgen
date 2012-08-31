@@ -8,4 +8,4 @@ rescue LoadError
 end
 
 db = Database.from_dsn(ARGV.shift)
-exit(TestGen.new().run_test(ARGF.read,db,CommandRunner.new))
+exit(TestGen.new().run_test(ARGV.shift,db,CommandRunner.new))
