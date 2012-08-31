@@ -3,10 +3,13 @@ require 'set'
 
 class DSLParser
 
+  attr_accessor :commands
+
   def initialize
     @tables = {}
     @tree_nodes = [ExpectationTreeNode.new('->')]
     @files_loaded = Set.new
+    @commands = []
   end
 
   def expectation_tree
@@ -27,6 +30,10 @@ protected
       instance_eval(File.read(file))
     end
     @files_loaded << file
+  end
+
+  def etl_run_command(command)
+    @commands << command
   end
 
   def dirty(table)

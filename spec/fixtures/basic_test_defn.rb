@@ -4,6 +4,8 @@ describe "our basic test definition test" do
   @src = table(:source,:src_table)
   @tgt = table(:target,:tgt_table)
 
+  etl_run_command "echo 400"
+
   expected_defaults @tgt,
     :str_column => 'defaulted in script',
     :int_column => 5

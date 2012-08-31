@@ -88,10 +88,12 @@ describe "TestGen" do
   describe "both setting up sources and validating expectations" do
     before :each do
       @target_db = Database.from_connection(@db)
+      @command_runner = mock("CommandRunner")
+      @command_runner.should_receive(:run).once.with("echo 400")
     end
 
     it "should put data in the database" do
-      @it.run_test(@test_script,@target_db)
+      @it.run_test(@test_script,@target_db,@command_runner)
       @db.run('select * from source.src_table').to_a.should ==
         [
           ["default string", 7, nil],
@@ -99,14 +101,14 @@ describe "TestGen" do
     end
 
     it "should give us back reasonable pass/fails" do
-      @it.run_test(@test_script,@target_db).should == 1
+      @it.run_test(@test_script,@target_db,@command_runner).should == 1
       @output.rewind
       @output.read.should == File.read('spec/fixtures/expected_output.txt')
     end
 
     it "should not hold state between test runs" do
-      @it.run_test(@test_script,@target_db)
-      @it.run_test(tempfile("expect_total_rows table(:target,:tgt_table), 0"),@target_db).should == 0
+      @it.run_test(@test_script,@target_db,@command_runner)
+      @it.run_test(tempfile("expect_total_rows table(:target,:tgt_table), 0"),@target_db,@command_runner).should == 0
     end
   end
 end

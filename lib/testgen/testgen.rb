@@ -12,8 +12,9 @@ class TestGen
     @output = ConsoleFormatter.new(output)
   end
 
-  def run_test(script,db)
+  def run_test(script,db,command_runner)
     setup_test(script,db)
+    run_etl(script,command_runner)
     great_expectations(script,db)
   end
 
@@ -41,11 +42,16 @@ class TestGen
 
 
 protected
+  def run_etl(script,command_runner)
+    @commands_to_run.each {|c| command_runner.run(c) }
+  end
+
   def eval_script(script)
     parser = DSLParser.new
     parser.parse(File.read(script))
     @tables = parser.tables
     @expectation_tree = parser.expectation_tree
+    @commands_to_run = parser.commands
   end
 
   def check_table_expectations(database)
