@@ -12,10 +12,9 @@ class TestGen
     @output = ConsoleFormatter.new(output)
   end
 
-  def generate_data(script)
-    eval_script(script)
-    print_tdr_inserts
-    return 0
+  def run_test(script,db)
+    setup_test(script,db)
+    great_expectations(script,db)
   end
 
   def great_expectations(script, target_db)
@@ -47,12 +46,6 @@ protected
     parser.parse(File.read(script))
     @tables = parser.tables
     @expectation_tree = parser.expectation_tree
-  end
-
-  def print_tdr_inserts
-    @tables.each do |table|
-      @output.format_sql(table.tdr_insert_stmt)
-    end
   end
 
   def check_table_expectations(database)

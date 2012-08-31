@@ -7,4 +7,5 @@ rescue LoadError
   require 'testgen'
 end
 
-exit(TestGen.new().generate_data(ARGF.read))
+db = Database.from_dsn(ARGV.shift)
+exit(TestGen.new().run_test(ARGF.read,db))

@@ -9,7 +9,6 @@ class Table
     @schema = schema
     @name = name
 
-    @tdr_rows = DefaultingRowSet.new
     @expected_row_factory = DefaultingRowSet.new
     @fixture_rows = DefaultingRowSet.new
 
@@ -17,31 +16,23 @@ class Table
   end
 
   def set_default(column,value)
-    @tdr_rows.set_default(column, value)
     @fixture_rows.set_default(column, value)
   end
 
   def set_expected_default(column,value)
     @expected_row_factory.set_default(column,value)
-    @tdr_rows.set_default(column,value)
   end
 
   def add_fixture_row(column_values)
-    @tdr_rows.add_row(column_values)
     @fixture_rows.add_row(column_values)
   end
 
   def add_expected_row(column_values)
-    @tdr_rows.add_row(column_values)
     new_expectation(@expected_row_factory.add_row(column_values))
   end
 
   def new_expectation(row)
     RowExpectation.new(@schema,@name,row)
-  end
-
-  def tdr_insert_stmt
-    @tdr_rows.insert_statements(@schema,@name).map {|stmt| stmt + ';' }.join("\n")
   end
 
   attr_writer :dirty
