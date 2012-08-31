@@ -8,4 +8,4 @@ rescue LoadError
 end
 
 target_db = Database.from_dsn(ARGV.shift)
-exit(TestDataGenerator.new().great_expectations(ARGF.read,target_db))
+exit(TestGen.new().great_expectations(ARGF.read,target_db))

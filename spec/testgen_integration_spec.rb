@@ -15,7 +15,7 @@ describe "TestGen" do
     @test_script = 'spec/fixtures/basic_test_defn.rb'
     @test_script2 = 'spec/fixtures/test_script2.rb'
 
-    @it = TestDataGenerator.new(@output)
+    @it = TestGen.new(@output)
   end
 
   def tempfile(content)

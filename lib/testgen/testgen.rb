@@ -6,7 +6,7 @@ require_relative 'd_s_l_parser'
 require_relative 'expectation_checker'
 require_relative 'console_formatter'
 
-class TestDataGenerator
+class TestGen
 
   def initialize(output = STDOUT)
     @output = ConsoleFormatter.new(output)

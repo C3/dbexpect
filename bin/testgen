@@ -7,4 +7,4 @@ rescue LoadError
   require 'testgen'
 end
 
-exit(TestDataGenerator.new().generate_data(ARGF.read))
+exit(TestGen.new().generate_data(ARGF.read))
