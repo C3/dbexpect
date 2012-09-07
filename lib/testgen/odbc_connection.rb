@@ -6,9 +6,7 @@ class OdbcConnection
   class DatabaseException < Exception; end
 
   attr_accessor :type
-  def initialize(dsn)
-    db_config = YAML.load_file('database.yml')[dsn]
-
+  def initialize(dsn,db_config)
     @connection = ODBC.connect(
       dsn,
       db_config['username'],

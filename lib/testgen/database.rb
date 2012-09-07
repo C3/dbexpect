@@ -1,12 +1,17 @@
 require_relative 'odbc_connection'
 
 class Database
-  def self.from_dsn(dsn)
-    new(OdbcConnection.new(dsn))
-  end
-
   def self.from_connection(con)
     new(con)
+  end
+
+  def self.hash_from_config
+    databases = {}
+    YAML.load_file('database.yml').each do |(dsn,config)|
+      databases[dsn.to_sym] = from_connection(OdbcConnection.new(dsn,config))
+    end
+
+    databases
   end
 
   def initialize(con)

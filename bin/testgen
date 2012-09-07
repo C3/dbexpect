@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+puts "Testgen. Written, owned and distributed by C3 Business Solutions"
+
 begin
   require 'testgen'
 rescue LoadError
@@ -7,5 +9,7 @@ rescue LoadError
   require 'testgen'
 end
 
-db = Database.from_dsn(ARGV.shift)
-exit(TestGen.new().run_test(ARGV.shift,db,CommandRunner.new))
+db = Database.hash_from_config
+ret = TestGen.new().run_test(ARGV.shift,db,CommandRunner.new)
+
+exit(ret)
