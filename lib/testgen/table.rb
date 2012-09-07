@@ -5,9 +5,10 @@ require_relative 'expectations/row_expectation'
 
 class Table
 
-  def initialize(schema,name)
+  def initialize(db_name,schema,name)
     @schema = schema
     @name = name
+    @db_name = db_name
 
     @expected_row_factory = DefaultingRowSet.new
     @fixture_rows = DefaultingRowSet.new
@@ -32,11 +33,15 @@ class Table
   end
 
   def new_expectation(row)
-    RowExpectation.new(@schema,@name,row)
+    RowExpectation.new(@db_name,@schema,@name,row)
   end
 
   attr_writer :dirty
-  def set_up_for_test(database)
+  def set_up_for_test(databases)
+    database = databases[@db_name]
+
+    raise "Could not find #{@db_name} in #{databases.inspect}" unless database
+
     unless @dirty
       database.truncate_table(@schema,@name)
     end
@@ -44,7 +49,7 @@ class Table
   end
 
   def row_count_check(count)
-    RowCountExpectation.new(@schema,@name,count)
+    RowCountExpectation.new(@db_name,@schema,@name,count)
   end
 
 end

@@ -1,8 +1,8 @@
 requires 'spec/fixtures/defaults.rb'
 
 describe "our basic test definition test" do
-  @src = table(:source,:src_table)
-  @tgt = table(:target,:tgt_table)
+  @src = table(:testgen_src,:source,:src_table)
+  @tgt = table(:testgen_tgt,:target,:tgt_table)
 
   etl_run_command "echo 400"
 

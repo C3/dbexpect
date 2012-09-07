@@ -86,8 +86,8 @@ protected
     end
   end
 
-  def table(schema,tablename)
-    @tables[schema.to_s + tablename.to_s] ||= Table.new(schema,tablename)
+  def table(db_name,schema,tablename)
+    @tables[db_name.to_s + schema.to_s + tablename.to_s] ||= Table.new(db_name,schema,tablename)
   end
 
   NULL = DbNull.new

@@ -1,9 +1,9 @@
 require_relative 'expectation'
 class RowExpectation < Expectation
-  def initialize(schema,table,row_data)
+  def initialize(db_name,schema,table,row_data)
     @row = row_data
     @count = 1
-    super(schema,table)
+    super(db_name,schema,table)
   end
 
   def where_clause

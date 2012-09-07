@@ -1,10 +1,12 @@
 class Expectation
-  def initialize(schema,table)
+  def initialize(db_name,schema,table)
     @schema = schema
     @table = table
+    @db_name = db_name
   end
 
-  def validate_expectation(database)
+  def validate_expectation(databases)
+    database = databases[@db_name]
     begin
       num = database.num_rows_match(@schema,@table,where_clause)
     rescue OdbcConnection::DatabaseException => e

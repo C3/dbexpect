@@ -7,15 +7,15 @@ describe RowExpectation do
     end
 
     before :each do
-      @db = mock
+      @db = {:dbname => mock}
       @expected_row = stub_row('clause1')
 
-      @it = RowExpectation.new('schema','tablename',@expected_row)
+      @it = RowExpectation.new(:dbname,'schema','tablename',@expected_row)
     end
 
 
     it "should gather failure messages for failed expectations" do
-      @db.should_receive(:num_rows_match).with('schema','tablename','clause1').
+      @db[:dbname].should_receive(:num_rows_match).with('schema','tablename','clause1').
         and_return(2)
 
       @it.validate_expectation(@db)
@@ -24,7 +24,7 @@ describe RowExpectation do
     end
 
     it "should gather failure messages for exception-causing" do
-      @db.should_receive(:num_rows_match).with('schema','tablename','clause1').
+      @db[:dbname].should_receive(:num_rows_match).with('schema','tablename','clause1').
         and_raise(OdbcConnection::DatabaseException.new('error message'))
 
       @it.validate_expectation(@db)

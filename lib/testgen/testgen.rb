@@ -12,16 +12,16 @@ class TestGen
     @output = ConsoleFormatter.new(output)
   end
 
-  def run_test(script,db,command_runner)
-    setup_test(script,db)
+  def run_test(script,databases,command_runner)
+    setup_test(script,databases)
     run_etl(script,command_runner)
-    great_expectations(script,db)
+    great_expectations(script,databases)
   end
 
-  def great_expectations(script, target_db)
+  def great_expectations(script, databases)
     eval_script(script)
 
-    check_table_expectations(target_db)
+    check_table_expectations(databases)
 
     if validates_expectations?
       @output.notify_passed
@@ -32,10 +32,10 @@ class TestGen
     end
   end
 
-  def setup_test(script,target_db)
+  def setup_test(script,databases)
     eval_script(script)
     @tables.each do |table|
-      table.set_up_for_test(target_db)
+      table.set_up_for_test(databases)
     end
     return 0
   end
@@ -54,8 +54,8 @@ protected
     @commands_to_run = parser.commands
   end
 
-  def check_table_expectations(database)
-    @expectation_checker = ExpectationChecker.new(database)
+  def check_table_expectations(databases)
+    @expectation_checker = ExpectationChecker.new(databases)
     @expectation_checker.check_expectations(@expectation_tree)
   end
 
