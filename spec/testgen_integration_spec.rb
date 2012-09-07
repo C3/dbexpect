@@ -17,8 +17,8 @@ describe "TestGen" do
 
     @output = StringIO.new
 
-    @test_script = 'spec/fixtures/basic_test_defn.rb'
-    @test_script2 = 'spec/fixtures/test_script2.rb'
+    @test_script = 'spec/fixtures/sample_project/tests/basic_test.rb'
+    @test_script2 = 'spec/fixtures/sample_project/tests/test2.rb'
 
     @it = TestGen.new(@output)
   end

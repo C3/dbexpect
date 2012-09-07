@@ -1,0 +1,9 @@
+testgen_src:
+  database: testgen_src
+  username: testgen
+  password: testgen
+
+testgen_tgt:
+  database: testgen_tgt
+  username: testgen
+  password: testgen

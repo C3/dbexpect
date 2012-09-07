@@ -1,4 +1,4 @@
-requires 'spec/fixtures/defaults.rb'
+requires 'spec/fixtures/sample_project/defaults/defaults.rb'
 
 describe "our basic test definition test" do
   @src = table(:testgen_src,:source,:src_table)
