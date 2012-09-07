@@ -6,14 +6,12 @@ require 'tempfile'
 
 describe "TestGen" do
   before :each do
-    @src_db = OdbcConnection.new('testgen_src')
-    @tgt_db = OdbcConnection.new('testgen_tgt')
+    @databases = Database.hash_from_config
+    @src_db = @databases[:testgen_src].instance_variable_get :@connection
+    @tgt_db = @databases[:testgen_tgt].instance_variable_get :@connection
 
     @src_db.run(File.read('spec/fixtures/sample_db.sql'))
     @tgt_db.run(File.read('spec/fixtures/sample_db.sql'))
-
-    @databases = {:testgen_src => Database.from_connection(@src_db),
-                  :testgen_tgt => Database.from_connection(@tgt_db)}
 
     @output = StringIO.new
 
