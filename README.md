@@ -54,6 +54,7 @@ to talk to. Each of the connections will need to have an ODBC connection
 defined as well.
 
 database.yml:
+
     database1:
       database: odbc_dsn
       username: barry
@@ -67,6 +68,7 @@ database.yml:
 Usage
 -----
 Assuming a folder structure for your tests that looks like this:
+
     /
     |-database.yml
     |
@@ -78,6 +80,7 @@ Assuming a folder structure for your tests that looks like this:
             |- test2.rb
 
 To run the tests in test1.rb:
+
     prompt:/$ testgen tests/test1.rb
 
 There is a sample testgen project at
