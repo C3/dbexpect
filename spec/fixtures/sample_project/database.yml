@@ -1,9 +1,9 @@
-testgen_src:
-  database: testgen_src
-  username: testgen
-  password: testgen
+dbexpect_src:
+  database: dbexpect_src
+  username: dbexpect
+  password: dbexpect
 
-testgen_tgt:
-  database: testgen_tgt
-  username: testgen
-  password: testgen
+dbexpect_tgt:
+  database: dbexpect_tgt
+  username: dbexpect
+  password: dbexpect

@@ -1,30 +1,30 @@
 # Copyright 2012 C3 Business Solutions
 #
-#    This file is part of Testgen.
+#    This file is part of dbexpect.
 #
-#    Testgen is free software: you can redistribute it and/or modify
+#    dbexpect is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    Testgen is distributed in the hope that it will be useful,
+#    dbexpect is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Testgen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with dbexpect.  If not, see <http://www.gnu.org/licenses/>.
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'rubygems'
 require 'odbc'
 require 'pry'
 require 'tempfile'
 
-describe "TestGen" do
+describe "Dbexpect" do
   before :each do
     @databases = Database.hash_from_config
-    @src_db = @databases[:testgen_src].instance_variable_get :@connection
-    @tgt_db = @databases[:testgen_tgt].instance_variable_get :@connection
+    @src_db = @databases[:dbexpect_src].instance_variable_get :@connection
+    @tgt_db = @databases[:dbexpect_tgt].instance_variable_get :@connection
 
     @src_db.run(File.read('spec/fixtures/sample_db.sql'))
     @tgt_db.run(File.read('spec/fixtures/sample_db.sql'))
@@ -34,7 +34,7 @@ describe "TestGen" do
     @test_script = 'spec/fixtures/sample_project/tests/basic_test.rb'
     @test_script2 = 'spec/fixtures/sample_project/tests/test2.rb'
 
-    @it = TestGen.new(@output)
+    @it = Dbexpect.new(@output)
   end
 
   def tempfile(content)
@@ -92,13 +92,13 @@ describe "TestGen" do
 
     it "should be happy if row counts are correct" do
       @tgt_db.run(File.read('spec/fixtures/basic_test_expected_inserts.sql'))
-      @it.great_expectations(tempfile("expect_total_rows table(:testgen_tgt,:target,:tgt_table), 5"),
+      @it.great_expectations(tempfile("expect_total_rows table(:dbexpect_tgt,:target,:tgt_table), 5"),
                              @databases).should == 0
     end
 
     it "should whine if row counts are off" do
       @tgt_db.run(File.read('spec/fixtures/basic_test_expected_inserts.sql'))
-      @it.great_expectations(tempfile("expect_total_rows table(:testgen_tgt,:target,:tgt_table), 10"),
+      @it.great_expectations(tempfile("expect_total_rows table(:dbexpect_tgt,:target,:tgt_table), 10"),
                              @databases).should == 1
     end
   end
@@ -125,7 +125,7 @@ describe "TestGen" do
 
     it "should not hold state between test runs" do
       @it.run_test(@test_script,@databases,@command_runner)
-      @it.run_test(tempfile("expect_total_rows table(:testgen_tgt,:target,:tgt_table), 0"),@databases,@command_runner).should == 0
+      @it.run_test(tempfile("expect_total_rows table(:dbexpect_tgt,:target,:tgt_table), 0"),@databases,@command_runner).should == 0
     end
   end
 end
