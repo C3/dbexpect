@@ -1,14 +1,14 @@
-Testgen
+dbexpect
 =======
 
-Testgen is a domain specific language written in ruby for testing ETL solutions.
+dbexpect is a domain specific language written in ruby for testing ETL solutions.
 
 Taking cues from Rspec in structure and usage, the point is to enable
 the specification of unit test data, job running, and expected outcomes
 for an entity/test cases in a ruby file using an internal DSL that is
 targeted at this kind of testing.
 
-Testgen is ideally suited to creating automated unit tests for
+dbexpect is ideally suited to creating automated unit tests for
 individual ETL jobs in a data warehousing or data migration project.
 Helping to ensure correctness of the job initially developed, and
 catching problems later on when someone makes a change that could affect
@@ -18,8 +18,8 @@ Sample test
 ---------
 
     describe "Moving customers from source to target" do
-      @src = table(:testgen_src,:testgen_src,:customers_src)
-      @tgt = table(:testgen_tgt,:testgen_tgt,:customers_tgt)
+      @src = table(:dbexpect_src,:dbexpect_src,:customers_src)
+      @tgt = table(:dbexpect_tgt,:dbexpect_tgt,:customers_tgt)
 
       etl_run_command "ruby etl2.rb"
 
@@ -46,10 +46,10 @@ Sample test
 
 Installation
 ------------
-    gem install testgen
+    gem install dbexpect
     
 Create a database.yml file in a folder where you want to store your
-tests, and set up connections for each of the databases you want testgen
+tests, and set up connections for each of the databases you want dbexpect
 to talk to. Each of the connections will need to have an ODBC connection
 defined as well.
 
@@ -81,10 +81,10 @@ Assuming a folder structure for your tests that looks like this:
 
 To run the tests in test1.rb:
 
-    prompt:/$ testgen tests/test1.rb
+    prompt:/$ dbexpect tests/test1.rb
 
-There is a sample testgen project at
-http://github.com/C3/testgen_example for more information.
+There is a sample dbexpect project at
+http://github.com/C3/dbexpect_example for more information.
 
 
 License
@@ -92,15 +92,15 @@ License
 
 Copyright 2012 C3 Business Solutions. See COPYING for further details.
 
-Testgen is free software: you can redistribute it and/or modify
+dbexpect is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Testgen is distributed in the hope that it will be useful,
+dbexpect is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Testgen.  If not, see <http://www.gnu.org/licenses/>.
+along with dbexpect.  If not, see <http://www.gnu.org/licenses/>.

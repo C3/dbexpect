@@ -24,7 +24,7 @@ class OdbcConnection
   attr_accessor :type
   def initialize(dsn,db_config)
     @connection = ODBC.connect(
-      dsn,
+      db_config['database'],
       db_config['username'],
       db_config['password']
     )

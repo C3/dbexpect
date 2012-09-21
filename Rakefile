@@ -1,19 +1,19 @@
 # Copyright 2012 C3 Business Solutions
 #
-#    This file is part of Testgen.
+#    This file is part of dbexpect.
 #
-#    Testgen is free software: you can redistribute it and/or modify
+#    dbexpect is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    Testgen is distributed in the hope that it will be useful,
+#    dbexpect is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with Testgen.  If not, see <http://www.gnu.org/licenses/>.
+#    along with dbexpect.  If not, see <http://www.gnu.org/licenses/>.
 # encoding: utf-8
 
 require 'rubygems'
@@ -30,8 +30,8 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "testgen"
-  gem.homepage = "http://github.com/bfabry/testgen"
+  gem.name = "dbexpect"
+  gem.homepage = "http://github.com/bfabry/dbexpect"
   gem.license = "PRIVATE"
   gem.summary = %Q{Generates inserts for test data from DSL}
   gem.description = %Q{As above}
@@ -59,7 +59,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "testgen #{version}"
+  rdoc.title = "dbexpect #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
