@@ -1,14 +1,91 @@
-= Testgen
+Testgen
+=======
 
-Testgen is a domain specific language written in ruby for targeted at
-testing ETL solutions.
+Testgen is a domain specific language written in ruby for testing ETL solutions.
 
 Taking cues from Rspec in structure and usage, the point is to enable
 the specification of unit test data, job running, and expected outcomes
 for an entity/test cases in a ruby file using an internal DSL that is
 targeted at this kind of testing.
 
-== License
+Testgen is ideally suited to creating automated unit tests for
+individual ETL jobs in a data warehousing or data migration project.
+Helping to ensure correctness of the job initially developed, and
+catching problems later on when someone makes a change that could affect
+existing functionality.
+
+Sample test
+---------
+
+    describe "Moving customers from source to target" do
+      @src = table(:testgen_src,:testgen_src,:customers_src)
+      @tgt = table(:testgen_tgt,:testgen_tgt,:customers_tgt)
+
+      etl_run_command "ruby etl2.rb"
+
+      expect_total_rows @tgt, 1
+
+      describe "it should upcase customer names" do
+        insert_into @src,
+          [:id,:name],
+          [[1,"Fred"]]
+
+        expect_rows @tgt,
+          [:id,:name],
+          [[1,"FRED"]]
+      end
+
+      describe "it should not migrate smith (because screw that guy)" do
+        insert_into @src,
+          [:id,:name],
+          [[1,"Smith"]]
+
+        # expect no rows
+      end
+    end
+
+Installation
+------------
+    gem install testgen
+    
+Create a database.yml file in a folder where you want to store your
+tests, and set up connections for each of the databases you want testgen
+to talk to. Each of the connections will need to have an ODBC connection
+defined as well.
+
+database.yml:
+    database1:
+      database: odbc_dsn
+      username: barry
+      password: secret
+
+    database2:
+      database: odbc_dsn2
+      username: shaz
+      password: secret
+
+Usage
+-----
+Assuming a folder structure for your tests that looks like this:
+    /
+    |-database.yml
+    |
+    |- defaults/
+    |          |- defaults_for_tablex.rb
+    |
+    |- tests/
+            |- test1.rb
+            |- test2.rb
+
+To run the tests in test1.rb:
+    prompt:/$ testgen tests/test1.rb
+
+There is a sample testgen project at
+http://github.com/C3/testgen_example for more information.
+
+
+License
+-------
 
 Copyright 2012 C3 Business Solutions. See COPYING for further details.
 
