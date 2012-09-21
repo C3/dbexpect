@@ -87,6 +87,12 @@ There is a sample dbexpect project at
 http://github.com/C3/dbexpect_example for more information.
 
 
+Thanks
+------
+Many thanks to my employer C3, for giving me the time to work on things
+that interest me like this and then allowing us to give them away for
+free. http://www.c3businesssolutions.com
+
 License
 -------
 
