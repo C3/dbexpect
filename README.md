@@ -89,14 +89,14 @@ http://github.com/C3/dbexpect_example for more information.
 
 Thanks
 ------
-Many thanks to my employer C3, for giving me the time to work on things
+Many thanks to my employer C3 Products, for giving me the time to work on things
 that interest me like this and then allowing us to give them away for
-free. http://www.c3businesssolutions.com
+free. http://www.c3products.com
 
 License
 -------
 
-Copyright 2012 C3 Business Solutions. See COPYING for further details.
+Copyright 2012 C3 Products. See COPYING for further details.
 
 dbexpect is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

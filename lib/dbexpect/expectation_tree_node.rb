@@ -1,4 +1,4 @@
-# Copyright 2012 C3 Business Solutions
+# Copyright 2012 C3 Products
 #
 #    This file is part of dbexpect.
 #
