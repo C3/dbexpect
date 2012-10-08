@@ -91,7 +91,7 @@ Thanks
 ------
 Many thanks to my employer C3 Products, for giving me the time to work on things
 that interest me like this and then allowing us to give them away for
-free. http://www.c3products.com
+free. http://www.c3products.com.au
 
 License
 -------
