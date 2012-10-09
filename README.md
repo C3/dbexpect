@@ -1,7 +1,7 @@
 dbexpect
 =======
 
-dbexpect is a domain specific language written in ruby for testing ETL solutions.
+dbexpect is an ETL unit testing tool written in ruby
 
 Taking cues from Rspec in structure and usage, the point is to enable
 the specification of unit test data, job running, and expected outcomes
@@ -13,6 +13,9 @@ individual ETL jobs in a data warehousing or data migration project.
 Helping to ensure correctness of the job initially developed, and
 catching problems later on when someone makes a change that could affect
 existing functionality.
+
+dbexpect's expected audience is ETL developers, ie people who use
+Datastage, Informatica, Pentaho, SSIS etc on a day to day basis
 
 Sample test
 ---------
