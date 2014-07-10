@@ -87,7 +87,7 @@ To run the tests in test1.rb:
     prompt:/$ dbexpect tests/test1.rb
 
 There is a sample dbexpect project at
-http://github.com/C3/dbexpect_example for more information.
+http://github.com/C3/dbexpect-example for more information.
 
 
 Thanks
